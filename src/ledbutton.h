@@ -5,7 +5,7 @@
 
 
 
-/*int main() {
+void button() {
   DDRB &= ~(1 << BUTTON_PIN); // SÄTTER PIN 9/KNAPP TILL INPUT/0
   PORTB |= (1 << BUTTON_PIN); // PULL UP
 
@@ -26,11 +26,4 @@
     _delay_ms(50);
   }
 
-
-
-
-
-
- return 0;
-
-}*/
+}

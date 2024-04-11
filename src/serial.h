@@ -25,46 +25,46 @@ void uart_init(unsigned long baud) {
     UCSR0B = (1 << RXEN0) | (1 << TXEN0);
 }
 
-// Skicka ett enskilt tecken över UART
+// Skicka tecken
 void uart_putchar(unsigned char data) {
     while (!(UCSR0A & (1 << UDRE0)));
     UDR0 = data;
 }
 
-//Ta emot ett enskilt tecken över UART
+//Ta emot tecken
 char uart_getchar(void) {
     while (!(UCSR0A & (1 << RXC0)));
     return UDR0;
 }
 
-// Funktion för att skicka en sträng över UART
+// Skicka en sträng
 void uart_transmit_string(const char* str) {
-    //loop - null-terminering
+    //loop me null-terminering
     while (*str != '\0') {
         uart_putchar(*str);
         str++;
     }
 }
 
-// Ta emot en sträng över UART
+// Ta emot sträng
 void uart_receive_string(char* str, int max_length) {
     int i = 0;
     char received_char;
     do {
         received_char = uart_getchar();
         str[i++] = received_char;
-    } while (received_char != '\0' && i < max_length - 1); // Maxlängd och null-tecknets hantering
-    str[i] = '\0'; // Lägg till null-terminator
+    } while (received_char != '\0' && i < max_length - 1); // Max
+    str[i] = '\0';
 }
 
-// Vänta på ett inkommande tecken (uart_getchar) och sedan skicka tillbaka samma tecken
+// Vänta på ett inkommande tecken (uart_getchar) och skicka tbx samma tecken
 void uart_echo() {
     char received_char = uart_getchar();
     uart_putchar(received_char);
     _delay_ms(50);
 }
 
-// Läs in en rad tills \n (line feed)
+// Läs in en rad tills \n (line edning LF)
 void uart_rec_str(char* str, int max_length) {
     int i = 0;
     char received_char;
@@ -75,7 +75,7 @@ void uart_rec_str(char* str, int max_length) {
     str[i] = '\0';
 }
 
-// Parsa kommandot för att kontrollera LED-tillståndet
+// Parsa cmd för att kont LED
 void parse_led_command(const char* cmd) {
     int value;
     if (sscanf(cmd, "ledpower %d", &value) == 1) {
