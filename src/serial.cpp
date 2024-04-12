@@ -9,6 +9,7 @@
 #define LED_PIN (1 << PB0)
 #define LedOn(bool) if(bool) { PORTB |= LED_PIN; } else { PORTB &= ~LED_PIN; }
 
+const int TURNON_VALUE = 127;
 
 void uart_init(unsigned long baud) {
     // Beräkna baud_setting för önskad baudhastighet
@@ -55,8 +56,14 @@ void uart_receive_string(char* str, int max_length) {
     char received_char;
     do {
         received_char = uart_getchar();
-        str[i++] = received_char;
-    } while (received_char != '\0' && i < max_length - 1); // Max
+        if (i < max_length - 1) {
+            str[i++] = received_char;
+        } else {
+            uart_transmit_string("Buffer overflow!\n");
+            break;
+        }
+        } while (received_char != '\0');
+    
     str[i] = '\0';
 }
 
@@ -82,7 +89,7 @@ void uart_rec_str(char* str, int max_length) {
 void parse_led_command(const char* cmd) {
     int value;
     if (sscanf(cmd, "ledpower %d", &value) == 1) {
-        if (value > 127) {
+        if (value > TURNON_VALUE) {
             LedOn(true); // Tänd LED
         } else {
             LedOn(false); // Släck LED

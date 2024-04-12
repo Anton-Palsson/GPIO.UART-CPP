@@ -27,10 +27,6 @@ void uart_rec_str(char* str, int max_length);
 
 void parse_led_command(const char* cmd);
 
-
-
-
-
 #endif
 
 
